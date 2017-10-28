@@ -17,5 +17,14 @@ namespace SaveTheCake
             location = s_location;
             texture = s_texture;
         }
+
+        public void draw(SpriteBatch spritebatch, Camera camera)
+        {
+            Vector2 drawRec = new Vector2(32 / 2, 32 / 2);
+            drawRec += location;
+            spritebatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.getTransformation());
+            spritebatch.Draw(texture, drawRec, Color.White);
+            spritebatch.End();
+        }
     }
 }

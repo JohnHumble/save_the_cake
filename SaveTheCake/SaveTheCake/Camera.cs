@@ -35,11 +35,13 @@ namespace SaveTheCake
         // change location.
         public void setLocation(Vector2 loc)
         {
+            loc.X *= -1;
+            loc.Y *= -1;
             location = loc;
         }
         public void setLocation(int x, int y)
         {
-            location = new Vector2(x, y);
+            location = new Vector2(x * -1, y * -1);
         }
 
         // change scale

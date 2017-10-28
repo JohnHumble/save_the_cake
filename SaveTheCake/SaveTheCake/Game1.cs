@@ -19,9 +19,12 @@ namespace SaveTheCake
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Camera camera;
+        int screenWidht, screenHeight;
 
         //units
         Player player1;
+        Cake[] cake;
+        const int CAKE_COUNT = 4;
 
         public Game1()
         {
@@ -38,7 +41,10 @@ namespace SaveTheCake
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            camera = new Camera(0, 0, 2);
+            screenHeight = graphics.PreferredBackBufferHeight;
+            screenWidht = graphics.PreferredBackBufferWidth;
+            camera = new Camera(screenWidht/2, screenHeight/2, 1);
+            cake = new Cake[CAKE_COUNT];
 
             base.Initialize();
         }
@@ -55,6 +61,11 @@ namespace SaveTheCake
             // TODO: use this.Content to load your game content here
             Texture2D player1Text = Content.Load<Texture2D>("stc_Player");
             player1 = new Player(new Vector2(0, 0), player1Text, new Vector2(0, 0));
+            Texture2D cakeTexture = Content.Load<Texture2D>("stc_Cake");
+            for (int i = 0; i < CAKE_COUNT; i++)
+            {
+                cake[i] = new Cake(new Vector2(0, 0), cakeTexture);
+            }
         }
 
         /// <summary>
@@ -79,7 +90,12 @@ namespace SaveTheCake
 
             // TODO: Add your update logic here
             player1.uptate(Keyboard.GetState());
-            camera.setLocation(player1.pLocation());
+
+            //track the player
+            Vector2 trackLocation = player1.pLocation();
+            trackLocation.X -= screenWidht / (2 * camera.scale);
+            trackLocation.Y -= screenHeight / (2 * camera.scale);
+            camera.setLocation(trackLocation);
             base.Update(gameTime);
         }
 
@@ -89,10 +105,14 @@ namespace SaveTheCake
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(new Color(128,222,92));
 
             // TODO: Add your drawing code here
             player1.draw(spriteBatch,camera);
+            for (int i = 0; i < CAKE_COUNT; i++)
+            {
+                cake[i].draw(spriteBatch, camera);
+            }
 
             base.Draw(gameTime);
         }
