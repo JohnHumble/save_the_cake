@@ -43,9 +43,11 @@ namespace SaveTheCake
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            screenHeight = graphics.PreferredBackBufferHeight;
-            screenWidht = graphics.PreferredBackBufferWidth;
-            camera = new Camera(screenWidht/2, screenHeight/2, 1);
+            graphics.IsFullScreen = false;
+            screenHeight = graphics.PreferredBackBufferHeight = 768;
+            screenWidht = graphics.PreferredBackBufferWidth = 768;
+            graphics.ApplyChanges();
+            camera = new Camera(screenWidht/2, screenHeight/2, 2);
             cake = new Cake[CAKE_COUNT];
             ants = new List<Ant>();
             base.Initialize();

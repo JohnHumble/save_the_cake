@@ -25,7 +25,6 @@ namespace SaveTheCake
         public void update()
         {
             //TODO: Make the ants move tward the target;
-            location.Y++;
         }
 
         public void draw(SpriteBatch spritebatch, Camera camera)
