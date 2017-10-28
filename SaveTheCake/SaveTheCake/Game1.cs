@@ -11,9 +11,6 @@ using Microsoft.Xna.Framework.Media;
 
 namespace SaveTheCake
 {
-    /// <summary>
-    /// This is the main type for your game
-    /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
@@ -34,12 +31,6 @@ namespace SaveTheCake
             Content.RootDirectory = "Content";
         }
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
@@ -53,10 +44,6 @@ namespace SaveTheCake
             base.Initialize();
         }
 
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
@@ -96,7 +83,7 @@ namespace SaveTheCake
 
             //TODO: create ant spawning logic;
             Vector2 hill1 = new Vector2(100, 120);
-            ants.Add(new Ant(hill1, new Vector2(0, 0), 5, antBlack));
+            ants.Add(new Ant(hill1, cake[0].location, 5, antBlack));
 
             foreach (Ant ant in ants)
             {

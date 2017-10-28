@@ -9,7 +9,7 @@ namespace SaveTheCake
 {
     class Cake
     {
-        Vector2 location;
+        public Vector2 location;
         Texture2D texture;
 
         public Cake(Vector2 s_location, Texture2D s_texture)
