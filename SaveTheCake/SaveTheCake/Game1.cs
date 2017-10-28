@@ -62,10 +62,12 @@ namespace SaveTheCake
             Texture2D player1Text = Content.Load<Texture2D>("stc_Player");
             player1 = new Player(new Vector2(0, 0), player1Text, new Vector2(0, 0));
             Texture2D cakeTexture = Content.Load<Texture2D>("stc_Cake");
-            for (int i = 0; i < CAKE_COUNT; i++)
-            {
-                cake[i] = new Cake(new Vector2(0, 0), cakeTexture);
-            }
+            const int CAKE_OFFSET = 32;
+            cake[0] = new Cake(new Vector2(CAKE_OFFSET, 0), cakeTexture);
+            cake[1] = new Cake(new Vector2(-CAKE_OFFSET, 0), cakeTexture);
+            cake[2] = new Cake(new Vector2(0, CAKE_OFFSET), cakeTexture);
+            cake[3] = new Cake(new Vector2(0, -CAKE_OFFSET), cakeTexture);
+
         }
 
         /// <summary>
