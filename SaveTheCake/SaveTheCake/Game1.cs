@@ -18,6 +18,10 @@ namespace SaveTheCake
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Camera camera;
+
+        //units
+        Player player1;
 
         public Game1()
         {
@@ -34,6 +38,7 @@ namespace SaveTheCake
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            camera = new Camera(0, 0, 2);
 
             base.Initialize();
         }
@@ -48,6 +53,8 @@ namespace SaveTheCake
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            Texture2D player1Text = Content.Load<Texture2D>("stc_Player");
+            player1 = new Player(new Vector2(0, 0), player1Text, new Vector2(0, 0));
         }
 
         /// <summary>
@@ -71,7 +78,8 @@ namespace SaveTheCake
                 this.Exit();
 
             // TODO: Add your update logic here
-
+            player1.uptate(Keyboard.GetState());
+            camera.setLocation(player1.pLocation());
             base.Update(gameTime);
         }
 
@@ -84,6 +92,7 @@ namespace SaveTheCake
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            player1.draw(spriteBatch,camera);
 
             base.Draw(gameTime);
         }
