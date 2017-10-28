@@ -25,6 +25,8 @@ namespace SaveTheCake
         Player player1;
         Cake[] cake;
         const int CAKE_COUNT = 4;
+        List<Ant> ants;
+        Texture2D antBlack;
 
         public Game1()
         {
@@ -45,7 +47,7 @@ namespace SaveTheCake
             screenWidht = graphics.PreferredBackBufferWidth;
             camera = new Camera(screenWidht/2, screenHeight/2, 1);
             cake = new Cake[CAKE_COUNT];
-
+            ants = new List<Ant>();
             base.Initialize();
         }
 
@@ -67,7 +69,7 @@ namespace SaveTheCake
             cake[1] = new Cake(new Vector2(-CAKE_OFFSET, 0), cakeTexture);
             cake[2] = new Cake(new Vector2(0, CAKE_OFFSET), cakeTexture);
             cake[3] = new Cake(new Vector2(0, -CAKE_OFFSET), cakeTexture);
-
+            antBlack = Content.Load<Texture2D>("stc_ant_black");
         }
 
         /// <summary>
@@ -90,7 +92,15 @@ namespace SaveTheCake
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            // TODO: Add your update logic here
+            //TODO: create ant spawning logic;
+            Vector2 hill1 = new Vector2(100, 120);
+            ants.Add(new Ant(hill1, new Vector2(0, 0), 5, antBlack));
+
+            foreach (Ant ant in ants)
+            {
+                ant.update();
+            }
+
             player1.uptate(Keyboard.GetState());
 
             //track the player
@@ -114,6 +124,10 @@ namespace SaveTheCake
             for (int i = 0; i < CAKE_COUNT; i++)
             {
                 cake[i].draw(spriteBatch, camera);
+            }
+            foreach (Ant ant in ants)
+            {
+                ant.draw(spriteBatch, camera);
             }
 
             base.Draw(gameTime);
