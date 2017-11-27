@@ -9,12 +9,13 @@ namespace SaveTheCake
 {
     class Ant
     {
+        // Members
         Vector2 location;
         Vector2 target;
         float speed;
         float rotation;
         Texture2D texture;
-
+        //Constructor
         public Ant(Vector2 s_location, Vector2 s_target, float s_speed, Texture2D s_texture)
         {
             location = s_location;
@@ -22,21 +23,14 @@ namespace SaveTheCake
             speed = s_speed;
             texture = s_texture;
         }
-
+        //update Logic Public Functions
         public void update()
         {
             //TODO: Make the ants move tward the target;
             rotation = angleTo(location, target);
-            Vector2 move = new Vector2(0, 0);
-            move.X = (float)Math.Cos(rotation) * speed;
-            move.Y = (float)Math.Sin(rotation) * speed;
-            location += move;
+            location += moveOffset(rotation);
         }
-
-        public void setTarget(Vector2 newTarget)
-        {
-            target = newTarget;
-        }
+        //update logic private functions
         private float angleTo(Vector2 start, Vector2 end)
         {
             float rotation = 0;
@@ -45,7 +39,18 @@ namespace SaveTheCake
             rotation = (float)Math.Atan2(offset.Y, offset.X);
             return rotation;
         }
-
+        private Vector2 moveOffset(float angle)
+        {
+            Vector2 offset = new Vector2(0, 0);
+            offset.X = (float)Math.Cos(angle) * speed;
+            offset.Y = (float)Math.Sin(angle) * speed;
+            return offset;
+        }
+        public void setTarget(Vector2 newTarget)
+        {
+            target = newTarget;
+        }
+        //draw logic public functions
         public void draw(SpriteBatch spritebatch, Camera camera)
         {
             spritebatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.getTransformation());

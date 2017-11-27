@@ -84,8 +84,8 @@ namespace SaveTheCake
 
             //TODO: create ant spawning logic;
             Vector2 hill1 = new Vector2(100, 120);
-            // mouseLoc = new Vector2((Mouse.GetState().X + camera.location.X) * camera.scale, (Mouse.GetState().Y + camera.location.Y) * camera.scale);
-            ants.Add(new Ant(hill1, mouseLoc, 5, antBlack));
+            //mouseLoc = new Vector2((Mouse.GetState().X + camera.location.X) * camera.scale, (Mouse.GetState().Y + camera.location.Y) * camera.scale);
+            ants.Add(new Ant(hill1, mouseLoc, 1, antBlack));
 
             foreach (Ant ant in ants)
             {
