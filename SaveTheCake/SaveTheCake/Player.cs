@@ -50,16 +50,17 @@ namespace SaveTheCake
 
         public void draw(SpriteBatch spritebatch, Camera camera)
         {
-            Vector2 drawRec = new Vector2(32 / 2, 32/2);
-            drawRec += location;
             spritebatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.getTransformation());
-            spritebatch.Draw(texture, drawRec, Color.White);
+            spritebatch.Draw(texture, location, Color.White);
             spritebatch.End();
         }
 
         public Vector2 pLocation()
         {
-            return location;
+            Vector2 giveLoc = location;
+            giveLoc.X += 16;
+            giveLoc.Y += 16;
+            return giveLoc;
         }
     }
 }

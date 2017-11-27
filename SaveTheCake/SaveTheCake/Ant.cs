@@ -26,15 +26,30 @@ namespace SaveTheCake
         public void update()
         {
             //TODO: Make the ants move tward the target;
-            rotation = (float)Math.Atan2(location.X - target.X, location.Y - target.Y);
+            rotation = angleTo(location, target);
+            Vector2 move = new Vector2(0, 0);
+            move.X = (float)Math.Cos(rotation) * speed;
+            move.Y = (float)Math.Sin(rotation) * speed;
+            location += move;
+        }
 
-
+        public void setTarget(Vector2 newTarget)
+        {
+            target = newTarget;
+        }
+        private float angleTo(Vector2 start, Vector2 end)
+        {
+            float rotation = 0;
+            Vector2 offset = end;
+            offset -= start;
+            rotation = (float)Math.Atan2(offset.Y, offset.X);
+            return rotation;
         }
 
         public void draw(SpriteBatch spritebatch, Camera camera)
         {
             spritebatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.getTransformation());
-            spritebatch.Draw(texture, location, new Rectangle(0,0,32,32), Color.White, rotation, new Vector2(0,0),1f,SpriteEffects.None,0f);
+            spritebatch.Draw(texture, location, new Rectangle(0,0,32,32), Color.White, rotation, new Vector2(16,16),1f,SpriteEffects.None,0f);
            // spritebatch.Draw(texture, location, Color.White);
             spritebatch.End();
         }

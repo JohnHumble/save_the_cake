@@ -16,7 +16,7 @@ namespace SaveTheCake
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Camera camera;
-        int screenWidht, screenHeight;
+        int screenWidth, screenHeight;
 
         //units
         Player player1;
@@ -35,10 +35,11 @@ namespace SaveTheCake
         {
             // TODO: Add your initialization logic here
             graphics.IsFullScreen = false;
+            this.IsMouseVisible = true;
             screenHeight = graphics.PreferredBackBufferHeight = 768;
-            screenWidht = graphics.PreferredBackBufferWidth = 768;
+            screenWidth = graphics.PreferredBackBufferWidth = 768;
             graphics.ApplyChanges();
-            camera = new Camera(screenWidht/2, screenHeight/2, 2);
+            camera = new Camera(screenWidth/2, screenHeight/2, 2);
             cake = new Cake[CAKE_COUNT];
             ants = new List<Ant>();
             base.Initialize();
@@ -69,7 +70,7 @@ namespace SaveTheCake
         {
             // TODO: Unload any non ContentManager content here
         }
-
+        Vector2 mouseLoc;
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
@@ -83,21 +84,40 @@ namespace SaveTheCake
 
             //TODO: create ant spawning logic;
             Vector2 hill1 = new Vector2(100, 120);
-            ants.Add(new Ant(hill1, cake[0].location, 5, antBlack));
+            // mouseLoc = new Vector2((Mouse.GetState().X + camera.location.X) * camera.scale, (Mouse.GetState().Y + camera.location.Y) * camera.scale);
+            ants.Add(new Ant(hill1, mouseLoc, 5, antBlack));
 
             foreach (Ant ant in ants)
             {
+                ant.setTarget(player1.pLocation());
                 ant.update();
             }
 
             player1.uptate(Keyboard.GetState());
+            MouseState mouse = Mouse.GetState();
+           // camera = trackPlayer(screenWidth,screenHeight,camera,mouse);
 
             //track the player
             Vector2 trackLocation = player1.pLocation();
-            trackLocation.X -= screenWidht / (2 * camera.scale);
+            trackLocation.X -= screenWidth / (2 * camera.scale);
             trackLocation.Y -= screenHeight / (2 * camera.scale);
             camera.setLocation(trackLocation);
             base.Update(gameTime);
+        }
+        private Camera trackPlayer(int screenWidth, int screenHeight, Camera camera, MouseState mouse)
+        {
+            // move the camera with the player
+            const float DRAG = 2;
+            Vector2 cameraOffset = new Vector2();
+            cameraOffset.X = -player1.pLocation().X + screenWidth / 2 / camera.scale;
+            cameraOffset.Y = -player1.pLocation().Y + screenHeight / 2 / camera.scale;
+            Vector2 targetLoc = new Vector2();
+            targetLoc.X = mouse.X - screenWidth / 2;
+            targetLoc.Y = mouse.Y - screenHeight / 2;
+            cameraOffset.X -= targetLoc.X / camera.scale / DRAG;
+            cameraOffset.Y -= targetLoc.Y / camera.scale / DRAG;
+            camera.setLocation(cameraOffset);
+            return camera;
         }
 
         /// <summary>
@@ -119,6 +139,8 @@ namespace SaveTheCake
                 ant.draw(spriteBatch, camera);
             }
 
+          //  spriteBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.getTransformation());
+           // spriteBatch.Draw(antBlack, mouseLoc, Color.Red);
             base.Draw(gameTime);
         }
     }
