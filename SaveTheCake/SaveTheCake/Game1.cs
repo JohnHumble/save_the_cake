@@ -13,16 +13,18 @@ namespace SaveTheCake
 {
     public class Game1 : Microsoft.Xna.Framework.Game
     {
+        static TimeSpan timer;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Camera camera;
         int screenWidth, screenHeight;
-
+        
         //units
         Player player1;
         Cake[] cake;
         const int CAKE_COUNT = 4;
         List<Ant> ants;
+        List<Hill> hills;
         Texture2D antBlack;
 
         public Game1()
@@ -34,6 +36,7 @@ namespace SaveTheCake
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            timer = TimeSpan.FromSeconds(1);
             graphics.IsFullScreen = false;
             this.IsMouseVisible = true;
             screenHeight = graphics.PreferredBackBufferHeight = 768;
@@ -76,8 +79,11 @@ namespace SaveTheCake
         /// checking for collisions, gathering input, and playing audio.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
+
         protected override void Update(GameTime gameTime)
         {
+            var elapsedTime = gameTime.ElapsedGameTime;
+            timer = timer.Add(-elapsedTime);
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
@@ -85,10 +91,16 @@ namespace SaveTheCake
             //TODO: create ant spawning logic;
             Vector2 hill1 = new Vector2(100, 120);
             //mouseLoc = new Vector2((Mouse.GetState().X + camera.location.X) * camera.scale, (Mouse.GetState().Y + camera.location.Y) * camera.scale);
-            ants.Add(new Ant(hill1, mouseLoc, 1, antBlack));
+
+            if (timer < TimeSpan.FromSeconds(0))
+            {
+                ants.Add(new Ant(hill1, mouseLoc, 1, antBlack));
+                timer = TimeSpan.FromSeconds(2);
+            }
 
             foreach (Ant ant in ants)
             {
+               
                 ant.setTarget(player1.pLocation());
                 ant.update();
             }
@@ -100,8 +112,10 @@ namespace SaveTheCake
             //track the player
             Vector2 trackLocation = player1.pLocation();
             trackLocation.X -= screenWidth / (2 * camera.scale);
+
             trackLocation.Y -= screenHeight / (2 * camera.scale);
             camera.setLocation(trackLocation);
+
             base.Update(gameTime);
         }
         private Camera trackPlayer(int screenWidth, int screenHeight, Camera camera, MouseState mouse)
